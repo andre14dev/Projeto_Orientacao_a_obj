@@ -1,7 +1,5 @@
 # 📌 Apresentação Final POO
 
-> [Uma frase curta descrevendo o que o projeto faz.]
-
 Projeto final da disciplina **C06 – Programação Orientada a Objetos** (NP2) — Inatel
 Professor: **Christopher Lima**
 
@@ -9,15 +7,21 @@ Professor: **Christopher Lima**
 
 ## 📖 Sobre o Projeto
 
-**Tema:** [Tema do projeto]
+**Tema:** Sistema de Gestão de Provedor de Internet (ISP).
 
-**Problema:** [Qual problema real o projeto resolve?]
+**Problema:** Provedores de internet de pequeno e médio porte costumam controlar clientes, planos e cobranças de forma manual, em planilhas. Cada tipo de plano cobra de um jeito: a fibra tem mensalidade fixa, e o plano móvel varia conforme o consumo de dados acima da franquia. Calcular tudo à mão, gerar as faturas de muitos clientes de uma vez e descobrir quem está com fatura vencida para suspender o serviço são tarefas lentas e sujeitas a erro, o que causa cobranças incorretas e atraso na suspensão de inadimplentes.
 
-**Solução:** [Como o projeto resolve esse problema?]
+**Solução:** Uma aplicação em Java, executada pelo console, que organiza esse processo:
+
+- **Cadastro de clientes**, cada um com um plano de Fibra ou Móvel, com validação dos dados (nome, CPF e endereço).
+- **Cálculo automático da mensalidade:** cada plano calcula a sua. A fibra cobra o valor fixo, e o móvel soma a tarifa dos GB que passam da franquia.
+- **Geração de faturas em paralelo**, com uma thread por cliente, o que agiliza o processamento quando há muitos clientes.
+- **Persistência em arquivos CSV**, que guardam clientes e faturas entre as execuções, sem precisar de banco de dados.
+- **Controle de inadimplência:** o sistema identifica quem tem fatura vencida e não paga, trata isso com uma exceção de negócio e suspende a conexão do cliente.
 
 ### 🎓 Relevância ao Curso
 
-[Explique como o projeto se relaciona com a área de formação do grupo — Software, Computação, Telecomunicações, Biomédica, Elétrica, Automação ou Produção.]
+O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a objetos (UML), herança, polimorfismo, interfaces e classes abstratas, tratamento de exceções, persistência em arquivos e programação concorrente. Também se liga à Telecomunicações, porque o domínio é o de uma operadora: planos de fibra e móvel, franquia de dados, cobrança de excedente e suspensão por inadimplência. É um projeto multidisciplinar, como o enunciado permite.
 
 ---
 
@@ -34,10 +38,9 @@ Professor: **Christopher Lima**
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Linguagem:** [ex.: Java 21]
-- **Framework / Bibliotecas:** [ex.: ...]
-- **Banco de Dados / Arquivos:** [ex.: ...]
-- **Ferramentas:** [ex.: IDE, gerenciador de dependências, ferramenta de UML]
+- **Linguagem:** Java 21
+- **Framework / Bibliotecas:** Nenhuma
+- **Banco de Dados / Arquivos:** Arquivos CSV
 
 ---
 
@@ -52,10 +55,10 @@ Professor: **Christopher Lima**
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/[usuario]/[repositorio].git
+git clone https://github.com/andre14dev/Projeto_Orientacao_a_obj.git
 
 # 2. Entre na pasta do projeto
-cd [repositorio]
+cd Projeto_Orientacao_a_obj
 
 # 3. [Comando para instalar dependências]
 
@@ -67,12 +70,33 @@ cd [repositorio]
 ## 📁 Estrutura do Projeto
 
 ```
-[repositorio]/
+projeto_final/
 ├── src/
-│   └── [estrutura de pacotes/pastas]
+│   ├── modelos/
+│   │   ├── ServicoTelecom.java        (abstrata)
+│   │   ├── PlanoFibra.java
+│   │   ├── PlanoMovel.java
+│   │   ├── Cliente.java
+│   │   └── Fatura.java
+│   ├── interfaces/
+│   │   └── Bloqueavel.java
+│   ├── excecoes/
+│   │   ├── DadosInvalidosException.java
+│   │   └── ClienteInadimplenteException.java
+│   ├── persistencia/
+│   │   ├── ClienteRepositorio.java
+│   │   └── FaturaRepositorio.java
+│   ├── threads/
+│   │   └── ProcessadorFaturas.java
+│   └── principal/
+│       └── Main.java
+├── dados/
+│   ├── clientes.csv                   (gerado ao executar)
+│   └── faturas.csv                    (gerado ao executar)
 ├── docs/
 │   └── uml/
-│       └── [diagrama].png
+│       └── diagrama.png               (e o .drawio editável)
+├── .gitignore
 └── README.md
 ```
 
@@ -105,7 +129,7 @@ O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 
 **Links das conversas:**
 
-**[Nome 1]**
+**André Luiz**
 [link da conversa]
 
 **[Nome 2]**
