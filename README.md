@@ -32,7 +32,7 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 | André Luiz | 967 | GES | [@Andre](https://github.com/andre14dev) |
 | [Nome 2] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
 | [Nome 3] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
-| [Nome 4] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
+| Victor Rafhael Rodrigues Honorato | [INSERIR MATRÍCULA AQUI] | Engenharia de Telecomunicações | [@honorato-victor](https://github.com/honorato-victor) |
 
 ---
 
@@ -138,5 +138,4 @@ O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 **[Nome 3]**
 [link da conversa]
 
-**[Nome 4]**
-[link da conversa]
+**Victor Rafhael Rodrigues Honorato (Pessoa 4):** Utilizei IA para estruturar a lógica de persistência com java.nio e a paralelização do processamento de faturas usando Runnable e Thread. Link da conversa: [INSERIR LINK DA IA AQUI]

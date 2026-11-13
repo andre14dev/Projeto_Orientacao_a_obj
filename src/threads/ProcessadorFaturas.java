@@ -1,15 +1,40 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+package threads;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import modelos.Cliente;
+import modelos.Fatura;
+import persistencia.FaturaRepositorio;
+
+import java.io.IOException;
+import java.time.LocalDate;
+
+public class ProcessadorFaturas implements Runnable {
+    private Cliente cliente;
+    private FaturaRepositorio faturaRepositorio;
+    private int diasParaVencimento;
+
+    public ProcessadorFaturas(Cliente cliente, FaturaRepositorio faturaRepositorio, int diasParaVencimento) {
+        this.cliente = cliente;
+        this.faturaRepositorio = faturaRepositorio;
+        this.diasParaVencimento = diasParaVencimento;
+    }
+
+    @Override
+    public void run() {
+        double valor = cliente.getPlano().calcularMensalidade();
+        LocalDate vencimento = LocalDate.now().plusDays(diasParaVencimento);
+        Fatura fatura = new Fatura(cliente.getCpf(), valor, vencimento, false);
+
+        System.out.printf("[%s] Gerando fatura para %s (CPF: %s) - Valor: R$ %.2f%n",
+                Thread.currentThread().getName(),
+                cliente.getNome(),
+                cliente.getCpf(),
+                valor);
+
+        try {
+            faturaRepositorio.salvar(fatura);
+        } catch (IOException e) {
+            System.out.println("[" + Thread.currentThread().getName() + "] Erro ao salvar fatura de "
+                    + cliente.getNome() + ": " + e.getMessage());
         }
     }
 }
