@@ -30,7 +30,7 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 | Nome | Matrícula | Curso | GitHub |
 |------|-----------|-------|--------|
 | André Luiz | 967 | GES | [@Andre](https://github.com/andre14dev) |
-| [Nome 2] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
+| Monique Amorim | 612 | GES | [@Mon-Amor](https://github.com/Mon-Amor) |
 | [Nome 3] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
 | [Nome 4] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
 
@@ -132,8 +132,8 @@ O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 **André Luiz**
 [link da conversa]
 
-**[Nome 2]**
-[link da conversa]
+**Monique Amorim**
+[[link da conversa](https://share.gemini.google/0XR1DK1Yx0GM)]
 
 **[Nome 3]**
 [link da conversa]
