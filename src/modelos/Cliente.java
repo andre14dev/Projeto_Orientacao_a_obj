@@ -10,12 +10,16 @@ public class Cliente {
 
     public Cliente(String nome, String cpf, String endereco, ServicoTelecom plano) throws DadosInvalidosException {
         
-        if (nome == "" || endereco == "") {
-            throw new DadosInvalidosException("Nome e endereço não podem ser vazios.");
+        if (nome == null || nome.isBlank() || endereco == null || endereco.isBlank()) {
+            throw new DadosInvalidosException("Nome e endereço não podem ser nulos ou vazios.");
         }
 
         if (plano == null) {
             throw new DadosInvalidosException("O plano não pode ser nulo.");
+        }
+
+        if (cpf == null) {
+            throw new DadosInvalidosException("O CPF não pode ser nulo.");
         }
 
         String cpfLimpo = normalizarCpf(cpf);
@@ -30,10 +34,8 @@ public class Cliente {
         this.plano = plano;
     }
 
-    public static String normalizarCpf(String cpf) {
-        String tiraPonto = cpf.replace(".", "");
-        String tiraTraco = tiraPonto.replace("-", "");
-        return tiraTraco;
+public static String normalizarCpf(String cpf) {
+        return cpf.replaceAll("\\D", "");
     }
 
     public String getNome() {
