@@ -56,6 +56,7 @@ public static String normalizarCpf(String cpf) {
     
     @Override
     public String toString() {
-        return "Cliente: " + nome + ", CPF: " + cpf + ", Endereço: " + endereco + ", Plano: " + plano.getNomePlano();
+        return String.format("Cliente [Nome: %s | CPF: %s | Endereço: %s | Plano: %s]", 
+                             nome, cpf, endereco, plano.getNomePlano());
     }
 }
