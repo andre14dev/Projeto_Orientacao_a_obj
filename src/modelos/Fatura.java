@@ -9,6 +9,17 @@ public class Fatura {
     private boolean paga;
 
     public Fatura(String cpfCliente, double valor, LocalDate vencimento, boolean paga) {
+
+        if (cpfCliente == null || cpfCliente.isBlank()) {
+            throw new IllegalArgumentException("O CPF do cliente não pode ser vazio.");
+        }
+        if (valor <= 0) {
+            throw new IllegalArgumentException("O valor da fatura deve ser maior que zero.");
+        }
+        if (vencimento == null) {
+            throw new IllegalArgumentException("A data de vencimento não pode ser nula.");
+        }
+        
         this.cpfCliente = cpfCliente;
         this.valor = valor;
         this.vencimento = vencimento;
@@ -16,11 +27,7 @@ public class Fatura {
     }
 
     public boolean estaAtrasada() {
-        if (paga == false && vencimento.isBefore(LocalDate.now())) {
-            return true;
-        } else {
-            return false;
-        }
+        return !paga && vencimento.isBefore(LocalDate.now());
     }
 
     public void pagar() {
@@ -39,21 +46,23 @@ public class Fatura {
         return vencimento;
     }
 
-    public boolean getPaga() {
+    public boolean isPaga() {
         return paga;
     }
 
     @Override
     public String toString() {
-        String status = "";
+        String status;
 
-        if (paga == true) {
+        if (paga) {
             status = "PAGA";
-        } else if (estaAtrasada() == true) {
+        } else if (estaAtrasada()) {
             status = "ATRASADA";
         } else {
             status = "ABERTA";
         }
-        return "Fatura [CPF: " + cpfCliente + " | Valor: R$ " + valor + " | Venc.: " + vencimento + " | Status: " + status + "]";
+        
+        return String.format("Fatura [CPF: %s | Valor: R$ %.2f | Venc.: %s | Status: %s]", 
+                             cpfCliente, valor, vencimento, status);
     }
 }
