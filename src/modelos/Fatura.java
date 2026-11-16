@@ -9,7 +9,6 @@ public class Fatura {
     private boolean paga;
 
     public Fatura(String cpfCliente, double valor, LocalDate vencimento, boolean paga) {
-
         if (cpfCliente == null || cpfCliente.isBlank()) {
             throw new IllegalArgumentException("O CPF do cliente não pode ser vazio.");
         }
@@ -19,7 +18,7 @@ public class Fatura {
         if (vencimento == null) {
             throw new IllegalArgumentException("A data de vencimento não pode ser nula.");
         }
-        
+
         this.cpfCliente = cpfCliente;
         this.valor = valor;
         this.vencimento = vencimento;
@@ -61,8 +60,8 @@ public class Fatura {
         } else {
             status = "ABERTA";
         }
-        
-        return String.format("Fatura [CPF: %s | Valor: R$ %.2f | Venc.: %s | Status: %s]", 
+
+        return String.format("Fatura [CPF: %s | Valor: R$ %.2f | Venc.: %s | Status: %s]",
                              cpfCliente, valor, vencimento, status);
     }
 }

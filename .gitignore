@@ -1,0 +1,15 @@
+# IDE
+.idea/
+*.iml
+
+# Compilacao
+out/
+*.class
+fontes.txt
+
+# Dados gerados ao executar (clientes.csv e faturas.csv)
+dados/*.csv
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

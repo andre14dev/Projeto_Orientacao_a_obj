@@ -6,10 +6,9 @@ public class Cliente {
     private String nome;
     private String cpf;
     private String endereco;
-    private ServicoTelecom plano; 
+    private ServicoTelecom plano;
 
     public Cliente(String nome, String cpf, String endereco, ServicoTelecom plano) throws DadosInvalidosException {
-        
         if (nome == null || nome.isBlank() || endereco == null || endereco.isBlank()) {
             throw new DadosInvalidosException("Nome e endereço não podem ser nulos ou vazios.");
         }
@@ -23,9 +22,13 @@ public class Cliente {
         }
 
         String cpfLimpo = normalizarCpf(cpf);
-        
+
         if (cpfLimpo.length() != 11) {
             throw new DadosInvalidosException("O CPF precisa ter 11 dígitos.");
+        }
+
+        if (nome.contains(";") || endereco.contains(";")) {
+            throw new DadosInvalidosException("Nome e endereço não podem conter ponto e vírgula.");
         }
 
         this.nome = nome;
@@ -53,10 +56,10 @@ public static String normalizarCpf(String cpf) {
     public ServicoTelecom getPlano() {
         return plano;
     }
-    
+
     @Override
     public String toString() {
-        return String.format("Cliente [Nome: %s | CPF: %s | Endereço: %s | Plano: %s]", 
+        return String.format("Cliente [Nome: %s | CPF: %s | Endereço: %s | Plano: %s]",
                              nome, cpf, endereco, plano.getNomePlano());
     }
 }

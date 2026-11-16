@@ -22,7 +22,13 @@ public class ProcessadorFaturas implements Runnable {
     public void run() {
         double valor = cliente.getPlano().calcularMensalidade();
         LocalDate vencimento = LocalDate.now().plusDays(diasParaVencimento);
-        Fatura fatura = new Fatura(cliente.getCpf(), valor, vencimento, false);
+        Fatura fatura;
+        try {
+            fatura = new Fatura(cliente.getCpf(), valor, vencimento, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Fatura não gerada para " + cliente.getNome() + ": " + e.getMessage());
+            return;
+        }
 
         System.out.printf("[%s] Gerando fatura para %s (CPF: %s) - Valor: R$ %.2f%n",
                 Thread.currentThread().getName(),

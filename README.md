@@ -13,9 +13,10 @@ Professor: **Christopher Lima**
 
 **Solução:** Uma aplicação em Java, executada pelo console, que organiza esse processo:
 
-- **Cadastro de clientes**, cada um com um plano de Fibra ou Móvel, com validação dos dados (nome, CPF e endereço).
+- **Cadastro de clientes**, cada um com um plano de Fibra ou Móvel. Os dados são validados **na hora da digitação**: se o nome ou o endereço estiverem vazios ou tiverem `;`, ou se o CPF não tiver 11 dígitos, o sistema mostra um aviso `>> ATENÇÃO` e pede o dado de novo. Plano com valor base menor ou igual a zero é recusado.
 - **Cálculo automático da mensalidade:** cada plano calcula a sua. A fibra cobra o valor fixo, e o móvel soma a tarifa dos GB que passam da franquia.
-- **Geração de faturas em paralelo**, com uma thread por cliente, o que agiliza o processamento quando há muitos clientes.
+- **Geração de faturas em paralelo**, com um pool de threads (`ExecutorService`, 3 threads), em que cada cliente vira uma tarefa, o que agiliza o processamento quando há muitos clientes.
+- **Pagamento de faturas** pelo CPF do cliente, que atualiza o arquivo.
 - **Persistência em arquivos CSV**, que guardam clientes e faturas entre as execuções, sem precisar de banco de dados.
 - **Controle de inadimplência:** o sistema identifica quem tem fatura vencida e não paga, trata isso com uma exceção de negócio e suspende a conexão do cliente.
 
@@ -48,8 +49,9 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 
 ### Pré-requisitos
 
-- [Requisito 1]
-- [Requisito 2]
+- JDK 21 ou superior (`javac` e `java` disponíveis no terminal)
+- Git (para clonar o repositório)
+- Nenhuma biblioteca externa nem banco de dados
 
 ### Passo a passo
 
@@ -57,13 +59,46 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 # 1. Clone o repositório
 git clone https://github.com/andre14dev/Projeto_Orientacao_a_obj.git
 
-# 2. Entre na pasta do projeto
+# 2. Entre na pasta do projeto (a raiz, onde estão src/ e README.md)
 cd Projeto_Orientacao_a_obj
 
-# 3. [Comando para instalar dependências]
+# 3. Compile (o javac encontra sozinho todas as classes usadas pelo Main)
+javac -encoding UTF-8 -d out -sourcepath src src/principal/Main.java
 
-# 4. [Comando para executar]
+# 4. Execute a partir da raiz (a pasta dados/ é criada aqui)
+java -Dfile.encoding=UTF-8 -cp out principal.Main
 ```
+
+**Windows:** no `cmd` e no Git Bash use os comandos acima (no `cmd`, `src\principal\Main.java`). No **PowerShell** é preciso colocar o parâmetro entre aspas, senão ele é interpretado errado:
+
+```powershell
+javac -encoding UTF-8 -d out -sourcepath src src\principal\Main.java
+java "-Dfile.encoding=UTF-8" -cp out principal.Main
+```
+
+**IntelliJ IDEA:** abra a pasta do projeto, marque `src` como *Sources Root*, escolha o JDK 21, defina o *Working directory* como a raiz do projeto e execute `principal.Main`.
+
+Os arquivos `dados/clientes.csv` e `dados/faturas.csv` são criados automaticamente no primeiro cadastro e na primeira geração de faturas.
+
+### Menu do sistema
+
+| Opção | O que faz |
+|-------|-----------|
+| 1 - Cadastrar cliente | Pede nome, CPF, endereço e dados do plano (Fibra ou Móvel), validando cada dado na hora. |
+| 2 - Listar clientes | Mostra os clientes e a mensalidade de cada um, calculada pelo plano (polimorfismo). |
+| 3 - Gerar faturas | Pede os dias até o vencimento (use negativo para simular fatura vencida) e gera as faturas em paralelo, em um pool de 3 threads. |
+| 4 - Listar faturas | Mostra as faturas com a situação: ABERTA, PAGA ou ATRASADA. |
+| 5 - Pagar fatura | Pelo CPF, marca como paga a primeira fatura em aberto do cliente. |
+| 6 - Verificar inadimplência | Lança `ClienteInadimplenteException` para quem tem fatura vencida e suspende a conexão do plano (`Bloqueavel`). |
+| 0 - Sair | Encerra o programa. |
+
+### Exemplo de uso
+
+1. Opção `1`: cadastre um cliente de fibra e um de plano móvel. Se digitar um CPF com menos ou mais de 11 dígitos, o sistema avisa e pergunta de novo.
+2. Opção `2`: veja as mensalidades. A fibra cobra o valor fixo. O móvel soma os GB acima da franquia (por exemplo: base R$ 50, franquia 5 GB, consumo 8 GB e tarifa R$ 2 por GB resultam em R$ 56,00).
+3. Opção `3` com `-5`: gera as faturas já vencidas. Opção `4`: elas aparecem como ATRASADA.
+4. Opção `6`: os clientes inadimplentes são identificados e suspensos.
+5. Opção `5` com o CPF de um cliente e depois a `6`: ele passa a aparecer "em dia".
 
 ---
 
@@ -106,14 +141,14 @@ projeto_final/
 
 | Conceito | Onde foi aplicado |
 |----------|-------------------|
-| **Classes** | [Classes principais, com atributos, métodos e construtores] |
-| **Herança** | [Hierarquia de classes — ex.: `ClasseBase` → `ClasseFilha`] |
-| **Polimorfismo** | [Onde e como o polimorfismo é usado] |
-| **Interfaces** | [Interfaces criadas e quem as implementa] |
-| **Classes Abstratas** | [Classes abstratas e quem as estende] |
-| **Tratamento de Erros** | [Exceções tratadas / exceções personalizadas] |
-| **Arquivos ou Banco de Dados** | [Como os dados são lidos/gravados] |
-| **Threads** | [Onde e para que as threads são usadas] |
+| **Classes** | `Cliente` (nome, CPF, endereço e plano, com construtor que valida os dados), `Fatura` (CPF, valor, vencimento e situação) e as classes de plano, todas com atributos encapsulados, construtores e métodos de acesso. |
+| **Herança** | `ServicoTelecom` → `PlanoFibra` e `ServicoTelecom` → `PlanoMovel`. As filhas herdam `nomePlano` e `valorBase` e chamam `super(...)` no construtor. |
+| **Polimorfismo** | `calcularMensalidade()` é chamado por uma referência `ServicoTelecom` no `Main` e no `ProcessadorFaturas`, e cada plano responde do seu jeito (fibra: valor fixo; móvel: valor base + excedente da franquia). Também há `instanceof Bloqueavel` antes de suspender a conexão. |
+| **Interfaces** | `Bloqueavel` (`suspenderConexao()`), implementada por `PlanoFibra` e `PlanoMovel`. |
+| **Classes Abstratas** | `ServicoTelecom`, com o método abstrato `calcularMensalidade()`, estendida por `PlanoFibra` e `PlanoMovel`. Não pode ser instanciada. |
+| **Tratamento de Erros** | Exceções personalizadas verificadas: `DadosInvalidosException` (nome, CPF, endereço e valor do plano inválidos; o `Main` também valida na hora da digitação e pede o dado de novo) e `ClienteInadimplenteException` (fatura vencida e não paga). `IOException` e `NumberFormatException` são tratadas no `Main` e nos repositórios; linhas corrompidas do CSV são ignoradas com aviso. |
+| **Arquivos ou Banco de Dados** | Arquivos CSV (`dados/clientes.csv` e `dados/faturas.csv`) lidos e gravados com `java.nio.file` (`Files`, `Path`) em UTF-8, por `ClienteRepositorio` e `FaturaRepositorio`. Sem banco de dados. |
+| **Threads** | `ProcessadorFaturas` (`Runnable`) gera e salva a fatura de um cliente. O `Main` usa `ExecutorService` com pool de 3 threads para processar vários clientes em paralelo. `FaturaRepositorio` usa métodos `synchronized` para gravar com segurança. |
 
 ---
 
@@ -121,7 +156,7 @@ projeto_final/
 
 O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 
-![Diagrama UML](docs/uml/[diagrama].png)
+![Diagrama UML](docs/uml/diagrama.png)
 
 ---
 
@@ -133,7 +168,7 @@ O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 [link da conversa]
 
 **Monique Amorim**
-[[link da conversa](https://share.gemini.google/0XR1DK1Yx0GM)]
+[Link da conversa](https://share.gemini.google/0XR1DK1Yx0GM)
 
 **[Nome 3]**
 [link da conversa]
