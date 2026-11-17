@@ -32,8 +32,8 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 |------|-----------|-------|--------|
 | André Luiz | 967 | GES | [@Andre](https://github.com/andre14dev) |
 | Monique Amorim | 612 | GES | [@Mon-Amor](https://github.com/Mon-Amor) |
-| Thaís Emanuelle Prado de Oliveira | 264 | [Curso] | [@thaismanu1](https://github.com/thaismanu1) |
-| Victor Rafhael Rodrigues Honorato | [INSERIR MATRÍCULA AQUI] | Engenharia de Telecomunicações | [@honorato-victor](https://github.com/honorato-victor) |
+| Thaís Emanuelle Prado de Oliveira | 264 | GES | [@thaismanu1](https://github.com/thaismanu1) |
+| Victor Rafhael Rodrigues Honorato | 9877 | GET | [@honorato-victor](https://github.com/honorato-victor) |
 
 ---
 
