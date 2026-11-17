@@ -32,8 +32,8 @@ O projeto trabalha a Engenharia de Software, ao aplicar modelagem orientada a ob
 |------|-----------|-------|--------|
 | André Luiz | 967 | GES | [@Andre](https://github.com/andre14dev) |
 | Monique Amorim | 612 | GES | [@Mon-Amor](https://github.com/Mon-Amor) |
-| [Nome 3] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
-| [Nome 4] | [Matrícula] | [Curso] | [@usuario](https://github.com/usuario) |
+| Thaís Emanuelle Prado de Oliveira | 264 | [Curso] | [@thaismanu1](https://github.com/thaismanu1) |
+| Victor Rafhael Rodrigues Honorato | [INSERIR MATRÍCULA AQUI] | Engenharia de Telecomunicações | [@honorato-victor](https://github.com/honorato-victor) |
 
 ---
 
@@ -154,9 +154,9 @@ projeto_final/
 
 ## 📐 Diagrama UML
 
-O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
+O diagrama UML completo está disponível em [`docs/uml/uml.png`](docs/uml/uml.png).
 
-![Diagrama UML](docs/uml/diagrama.png)
+![Diagrama UML](docs/uml/uml.png)
 
 ---
 
@@ -165,13 +165,15 @@ O diagrama UML completo está disponível em [`docs/uml/`](docs/uml/).
 **Links das conversas:**
 
 **André Luiz**
-[link da conversa]
+[link da conversa1](https://claude.ai/share/bc9611e1-565c-4908-9951-68b4d8a1651f)
+[link da conversa2](https://chatgpt.com/share/6afbbd96-31cc-83e8-a52d-f4510c17aca7)
 
 **Monique Amorim**
 [Link da conversa](https://share.gemini.google/0XR1DK1Yx0GM)
 
-**[Nome 3]**
-[link da conversa]
+**Thaís Emanuelle Prado de Oliveira**
+[Link da conversa](https://chatgpt.com/share/6afbb172-273c-83e8-b1f7-0474b8385578)
 
-**[Nome 4]**
+**Victor Rafhael Rodrigues Honorato (Pessoa 4)**
+Utilizei IA para estruturar a lógica de persistência com java.nio e a paralelização do processamento de faturas usando Runnable e Thread.
 [link da conversa]

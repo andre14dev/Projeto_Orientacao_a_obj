@@ -1,3 +1,4 @@
+
 package principal;
 
 import modelos.Cliente;
@@ -19,9 +20,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         ClienteRepositorio clienteRepositorio =
                 new ClienteRepositorio("dados/clientes.csv");
 
@@ -31,6 +34,7 @@ public class Main {
         int opcao = -1;
 
         while (opcao != 0) {
+
             System.out.println("\n===== SISTEMA DE GESTÃO ISP =====");
             System.out.println("1 - Cadastrar cliente");
             System.out.println("2 - Listar clientes");
@@ -44,7 +48,9 @@ public class Main {
             opcao = lerInt();
 
             try {
+
                 switch (opcao) {
+
                     case 1:
                         cadastrarCliente(clienteRepositorio);
                         break;
@@ -76,8 +82,10 @@ public class Main {
                     default:
                         System.out.println("Opção inválida!");
                 }
+
             } catch (DadosInvalidosException e) {
                 System.out.println("Erro: " + e.getMessage());
+
             } catch (IOException e) {
                 System.out.println("Erro ao acessar os arquivos: " + e.getMessage());
             }
@@ -86,10 +94,14 @@ public class Main {
         scanner.close();
     }
 
+    // Cadastro de clientes
     private static void cadastrarCliente(ClienteRepositorio repositorio)
             throws DadosInvalidosException, IOException {
+
         System.out.println("\n===== CADASTRAR CLIENTE =====");
 
+        // Cada dado é validado assim que é digitado: se estiver errado, o sistema avisa
+        // na hora e pergunta de novo, em vez de reclamar só no final do cadastro.
         String nome;
         while (true) {
             System.out.print("Nome: ");
@@ -144,6 +156,7 @@ public class Main {
         int tipo = lerInt();
 
         if (tipo == 1) {
+
             System.out.print("Nome do plano: ");
             String nomePlano = lerTexto();
 
@@ -161,7 +174,9 @@ public class Main {
             repositorio.salvar(cliente);
 
             System.out.println("Cliente cadastrado com sucesso!");
+
         } else if (tipo == 2) {
+
             System.out.print("Nome do plano: ");
             String nomePlano = lerTexto();
 
@@ -185,13 +200,16 @@ public class Main {
             repositorio.salvar(cliente);
 
             System.out.println("Cliente cadastrado com sucesso!");
+
         } else {
             System.out.println("Tipo de plano inválido!");
         }
     }
 
+    // Listagem de clientes
     private static void listarClientes(ClienteRepositorio repositorio)
             throws IOException {
+
         System.out.println("\n===== CLIENTES CADASTRADOS =====");
 
         List<Cliente> clientes = repositorio.listarTodos();
@@ -202,6 +220,7 @@ public class Main {
         }
 
         for (Cliente cliente : clientes) {
+
             System.out.println(cliente);
 
             System.out.printf("Mensalidade: R$ %.2f%n", cliente.getPlano().calcularMensalidade());
@@ -210,10 +229,12 @@ public class Main {
         }
     }
 
+    // Geração de faturas utilizando threads
     private static void gerarFaturas(
             ClienteRepositorio clienteRepositorio,
             FaturaRepositorio faturaRepositorio)
             throws IOException {
+
         System.out.println("\n===== GERAR FATURAS =====");
 
         System.out.print("Quantos dias faltam para o vencimento? ");
@@ -229,6 +250,7 @@ public class Main {
         ExecutorService executor = Executors.newFixedThreadPool(3);
 
         for (Cliente cliente : clientes) {
+
             ProcessadorFaturas processador =
                     new ProcessadorFaturas(cliente, faturaRepositorio, dias);
 
@@ -241,14 +263,17 @@ public class Main {
             executor.awaitTermination(1, TimeUnit.DAYS);
 
             System.out.println("Geração de faturas concluída!");
+
         } catch (InterruptedException e) {
             System.out.println("Processamento interrompido.");
             Thread.currentThread().interrupt();
         }
     }
 
+    // Listagem de faturas
     private static void listarFaturas(FaturaRepositorio repositorio)
             throws IOException {
+
         System.out.println("\n===== FATURAS =====");
 
         List<Fatura> faturas = repositorio.listarTodas();
@@ -264,8 +289,10 @@ public class Main {
         }
     }
 
+    // Pagamento de fatura
     private static void pagarFatura(FaturaRepositorio repositorio)
             throws IOException {
+
         System.out.println("\n===== PAGAR FATURA =====");
 
         System.out.print("Digite o CPF do cliente: ");
@@ -274,7 +301,9 @@ public class Main {
         List<Fatura> faturas = repositorio.listarTodas();
 
         for (Fatura fatura : faturas) {
+
             if (fatura.getCpfCliente().equals(cpf) && !fatura.isPaga()) {
+
                 fatura.pagar();
 
                 repositorio.salvarTodas(faturas);
@@ -287,24 +316,31 @@ public class Main {
         System.out.println("Nenhuma fatura em aberto encontrada para esse CPF.");
     }
 
+    // Verificação de inadimplência
     private static void verificarInadimplencia(
             ClienteRepositorio clienteRepositorio,
             FaturaRepositorio faturaRepositorio)
             throws IOException {
+
         System.out.println("\n===== VERIFICAR INADIMPLÊNCIA =====");
 
         List<Cliente> clientes = clienteRepositorio.listarTodos();
         List<Fatura> faturas = faturaRepositorio.listarTodas();
 
         for (Cliente cliente : clientes) {
+
             try {
+
                 verificarAdimplencia(cliente, faturas);
 
                 System.out.println(cliente.getNome() + " está em dia.");
+
             } catch (ClienteInadimplenteException e) {
+
                 System.out.println("Atenção: " + e.getMessage());
 
                 if (cliente.getPlano() instanceof Bloqueavel) {
+
                     Bloqueavel bloqueavel =
                             (Bloqueavel) cliente.getPlano();
 
@@ -314,12 +350,16 @@ public class Main {
         }
     }
 
+    // Verifica se o cliente possui fatura atrasada
     private static void verificarAdimplencia(
             Cliente cliente, List<Fatura> faturas)
             throws ClienteInadimplenteException {
+
         for (Fatura fatura : faturas) {
+
             if (fatura.getCpfCliente().equals(cliente.getCpf())
                     && fatura.estaAtrasada()) {
+
                 throw new ClienteInadimplenteException(
                         "Cliente " + cliente.getNome()
                                 + " possui fatura atrasada!");
@@ -327,25 +367,34 @@ public class Main {
         }
     }
 
+    // Leitura de texto
     private static String lerTexto() {
         return scanner.nextLine();
     }
 
+    // Leitura de números inteiros
     private static int lerInt() {
+
         while (true) {
+
             try {
                 return Integer.parseInt(scanner.nextLine());
+
             } catch (NumberFormatException e) {
                 System.out.print("Digite um número inteiro válido: ");
             }
         }
     }
 
+    // Leitura de números decimais
     private static double lerDouble() {
+
         while (true) {
+
             try {
                 return Double.parseDouble(
                         scanner.nextLine().replace(",", "."));
+
             } catch (NumberFormatException e) {
                 System.out.print("Digite um número válido: ");
             }

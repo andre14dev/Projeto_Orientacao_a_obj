@@ -3,7 +3,10 @@ package modelos;
 import excecoes.DadosInvalidosException;
 import interfaces.Bloqueavel;
 
+// Plano móvel: herda nomePlano e valorBase de ServicoTelecom
+// e implementa Bloqueavel para poder ter a linha suspensa.
 public class PlanoMovel extends ServicoTelecom implements Bloqueavel {
+
     private double franquiaGb;
     private double consumoGb;
     private double tarifaPorGbExcedente;
@@ -16,6 +19,9 @@ public class PlanoMovel extends ServicoTelecom implements Bloqueavel {
         this.tarifaPorGbExcedente = tarifaPorGbExcedente;
     }
 
+    // Sobrescrita (override): no móvel a mensalidade é dinâmica.
+    // Valor base + tarifa de cada GB consumido acima da franquia.
+    // Math.max(0, ...) evita excedente negativo quando o consumo fica dentro da franquia.
     @Override
     public double calcularMensalidade() {
         double excedente = Math.max(0, consumoGb - franquiaGb);

@@ -60,6 +60,7 @@ public class FaturaRepositorio {
                 boolean paga = Boolean.parseBoolean(partes[3]);
 
                 faturas.add(new Fatura(cpf, valor, vencimento, paga));
+            // IllegalArgumentException cobre também NumberFormatException e as validações de Fatura
             } catch (IllegalArgumentException | DateTimeParseException | ArrayIndexOutOfBoundsException e) {
                 System.out.println("Aviso: Linha corrompida ignorada em faturas.csv (linha " + (i + 1) + "): " + e.getMessage());
             }

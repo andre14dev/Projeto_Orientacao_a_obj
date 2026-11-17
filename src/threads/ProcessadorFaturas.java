@@ -26,6 +26,7 @@ public class ProcessadorFaturas implements Runnable {
         try {
             fatura = new Fatura(cliente.getCpf(), valor, vencimento, false);
         } catch (IllegalArgumentException e) {
+            // mensalidade <= 0 ou dado inválido: avisa e encerra só esta tarefa, sem matar a thread com stack trace
             System.out.println("Fatura não gerada para " + cliente.getNome() + ": " + e.getMessage());
             return;
         }
